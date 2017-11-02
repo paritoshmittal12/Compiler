@@ -1,9 +1,8 @@
 %{
 
-
-//	1. NEED TO CHECK THE VALIDITY OF THE TEMP ARRAYS USED: WHEN TO CLEAR THEM
-
-
+		/*	We declare the global variables and code the grammar that our language will follow   */
+		/*  Grammar definition is an important part of any compiler as any string not grammatically corrent will not be processed further */
+		/*  Semantic Analysis of string is done here line by line for entire test.c */
 #include <stdio.h>
 #include "function.cpp"
 #include <fstream>
@@ -55,6 +54,8 @@ vector<int> arr_dim;
 %type <flt> FLTVAL
 %type <node> code parts struct var_declare function_head function_body var_declarations opt_string element struct_declare data_type %type <node> struct_elem_list elements_name decl_elem expr square_brackets array_list struct_element mul_star body result element_name %type <node> params_list param_list param stmts stmt return_stmt expr_stmt while_loop function_call arg_list error function_head1 LHS lhs_element  while_lhs  function_call_lhs function_call_rhs if_expr  M N struct_define
 
+
+	/* left and right associate nature of operators are defined here */
 %right ELSE
 %left ','
 %right '=' ADD_OPE SUB_OPE MUL_OPE DIV_OPE
@@ -70,6 +71,8 @@ vector<int> arr_dim;
 %left '(' ')' '[' ']' '.' PTR_OPE
 
 
+		/* Whenever a keyword is identified by lex we perform certain functions declared in function.cpp */
+		/* What to do of each keyword is piggybacked in code just after the literal is detected inside '{ }' */ 
 %%
 	
 code 				: parts 				{ print_global_table(&global_table);print_quadruples(quadruples);}

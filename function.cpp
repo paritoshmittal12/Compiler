@@ -1,3 +1,20 @@
+/*
+----------------------------------------------------------------------------------------------------------------------------------
+|				CODE contains functions for Symantic Analysis of a given Sub-C code.											 |
+----------------------------------------------------------------------------------------------------------------------------------				
+*/
+
+/*
+Global Tables are maintained to keep track of everything in the code.
+
+Function tables contains function pointers that contain param_list and other details for each function.
+
+list_var contains all variables that being defined or used. It contains the value and scope of each variable.
+
+Variable overloading is allowed as scope is different.
+*/
+
+
 #include <iostream>
 #include <list>
 #include <stdio.h>
@@ -95,22 +112,6 @@ typedef struct function {
 } entry;
 
 
-// typedef struct baby_structure
-// {
-// 	string name;
-// 	string str_name;
-// 	vector<list_var> mem_list;
-// 	int level;
-// 	baby_structure (){}
-
-// 	baby_structure(string name1, int level1)
-// 	{
-// 		name = name1;
-// 		level = level1;
-// 	}
-	
-// } list_struct_baby;
-
 
 list_struct* search_struct(std::vector<list_struct> *struct_table, string name1)
 {
@@ -139,20 +140,6 @@ list_var* search_str_var(vector<variable> struct_var_table, string var_name)
 	}
 	return temp;
 }
-//searches function in Function table
-
-// entry* search_function(std::vector<entry> function_table, string name)
-// {
-//     for(int i=0; i<function_table.size(); i++)
-//     {
-//             if(function_table[i].func_name == name)
-//             {
-//                     return &function_table[i];
-//             }
-//     }
-   
-//     return NULL;
-// }
 
 //searches function in Function table
 
@@ -303,11 +290,6 @@ list_var* search_struct_in_global(string param_name,vector<variable> *global_tab
     {
             if((*global_table)[i].name == param_name  && (*global_table)[i].dtype == STRUCT1)
             {
-            	// if(vtype==ARRAY){
-            	// 	if((*global_table)[i].dimlist.size() == dimno)
-             //       		 return &((*global_table)[i]);
-            	// }
-            	// else
             		 return &((*global_table)[i]);
             }
     }
@@ -372,7 +354,7 @@ void enter_param(string name, data_type type, entry* fnptr)
 
 	list_var *new_param = new list_var();
 	new_param->name=name;
-	new_param->dtype=type;				//needs changes here to accomodate arrays
+	new_param->dtype=type;				
 	new_param->level=1;
 
 	fnptr->param_list.push_back(*new_param);
@@ -429,14 +411,7 @@ void delete_var_list(entry *fnptr,int level)
 			fnptr->var_list.erase(fnptr->var_list.begin()+i);
 		}
 	}
-	// vector<list_var>:: iterator it;
-	// for (it=fnptr->var_list.begin(); it != fnptr->var_list.end();++it)
-	// {
-	// 	if(it->level == level)
-	// 	{
-	// 		fnptr->var_list.erase(it);
-	// 	}
-	// }
+	
 }
 
 
@@ -472,7 +447,6 @@ int coercible(data_type expr1,data_type expr2)
                 return 1;
         if((expr1==INT1&&expr2==FLOAT1)||(expr1==FLOAT1&&expr2==INT1)||(expr1==INT1&&expr2==CHAR1)||(expr1==CHAR1&&expr2==INT1))
         {
-        	//cout << "Warning: different data type assignment.\n" ;
         	return 1;
         }
         return 0;
@@ -608,7 +582,7 @@ void gen(int next_quad , vector<string *> *quadruples ,string str){
 
 
 
-int   newtemp( data_type dtype, vector<variable> * global_table ,int scope){
+int newtemp( data_type dtype, vector<variable> * global_table ,int scope){
 	ostringstream Convert;
 	Convert<<temp_count;
 	temp_count++;
@@ -647,21 +621,3 @@ int size(data_type d){
 		return 1;
 
 }
-
-
-
-
-
-
-// void back_patch(vector<string *>  *list, int quad_number ){
-// 		for(int i=0;i<(*list).size();i++){
-// 			(*list)[i].append(" "+ str(quad_number));
-// 		}
-// }
-
-
-
-
-// int main(){
-// 	return 0;
-// }

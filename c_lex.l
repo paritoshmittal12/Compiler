@@ -1,3 +1,11 @@
+
+#|
+The following file contains code for lexical analysis of a given string 
+The string is parsed and keywords are identified by this file
+
+|#
+
+
 %{
 #include "y.tab.h"
 #include <stdio.h>
